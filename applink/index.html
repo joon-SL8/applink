@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connecting to App...</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 50px; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #fc5200; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+<h2>Redirecting you back to the app...</h2>
+<div class="spinner"></div>
+<p>If you are not redirected automatically, <a id="fallback-link" href="#">click here</a>.</p>
+
+<script>
+    // 1. Get the query parameters sent by Strava (e.g., ?code=abc&scope=xyz)
+    const queryString = window.location.search;
+
+    // 2. Define your app's internal Custom URL Scheme
+    // Change "myapp" to match your actual mobile app scheme registered in Xcode/Android Studio
+    const appDeepLink = "myapp://strava-callback" + queryString;
+
+    // Set up the fallback link just in case auto-redirect fails
+    document.getElementById("fallback-link").href = appDeepLink;
+
+    // 3. Automatically attempt to open the mobile app
+    window.location.replace(appDeepLink);
+
+    // Optional fallback: If the user stays on this page for 3 seconds,
+    // it usually means the app isn't installed.
+    setTimeout(() => {
+        console.log("Deep link triggered. If nothing happened, ensure the app is installed.");
+    }, 3000);
+</script>
+</body>
+</html>
